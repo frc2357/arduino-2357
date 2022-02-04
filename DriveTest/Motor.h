@@ -2,6 +2,7 @@
 #define MOTOR_H
 
 #include "Arduino.h"
+#include "math.h"
 
 #define MAXIMUM_SPEED 63
 

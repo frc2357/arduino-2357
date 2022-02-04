@@ -11,6 +11,7 @@ public:
     void setDrive(double x, double y);
 
 private:
+    double rangeCheck(double value);
     Motor m_leftMotor, m_rightMotor;
 };
 

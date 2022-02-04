@@ -3,14 +3,37 @@
 Motor::Motor(unsigned int motorPos)
 {
     m_motorInstructions.motor = motorPos;
-    m_motorInstructions.direction = 0x0;
-    m_motorInstructions.speed = 0x000000;
+    m_motorInstructions.direction = 0;
+    m_motorInstructions.speed = 0;
 }
 
 //Speed is value from -1.0 to 1.0, turn proportion should already be compensated for
 void Motor::setSpeed(double speed)
 {
-    m_motorInstructions.direction = speed > 0 ? 0x0 : 0x1;
-    m_motorInstructions.speed = static_cast<int>(MAXIMUM_SPEED / speed);
-    //Serial.write(byte(m_motorInstructions));
+    m_motorInstructions.direction = speed > 0 ? 0 : 1;
+    m_motorInstructions.speed = static_cast<int>(MAXIMUM_SPEED * (speed > 0 ? speed : (-1 * speed)));
+
+    /*Serial.print("speed: ");
+    Serial.println(speed);
+    Serial.print("direction: ");
+    Serial.println((m_motorInstructions.direction == 0 ? "clockwise" : "counterclockwise"));
+    Serial.print("motor speed: ");
+    Serial.println(m_motorInstructions.speed); */
+
+    uint8_t message = (m_motorInstructions.motor << 7);
+    message += (m_motorInstructions.direction << 6);
+    message += (m_motorInstructions.speed);
+    Serial.print("Message: ");
+    Serial.println(message);
+
+    Serial.print("bits: ");
+    for (int i = 7; i >= 0; i--)
+    {
+        bool b = bitRead(message, i);
+        Serial.print(b);
+    }
+    Serial.println();
+    Serial.flush();
+    Serial.write(message);
+    Serial.println();
 }
