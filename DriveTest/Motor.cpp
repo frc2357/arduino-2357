@@ -10,8 +10,10 @@ Motor::Motor(unsigned int motorPos)
 //Speed is value from -1.0 to 1.0, turn proportion should already be compensated for
 void Motor::setSpeed(double speed)
 {
-    m_motorInstructions.direction = speed > 0 ? 0 : 1;
-    m_motorInstructions.speed = static_cast<int>(MAXIMUM_SPEED * (speed > 0 ? speed : (-1 * speed)));
+    uint8_t dir = (static_cast<int>(speed) & 64)/64;
+  
+    m_motorInstructions.direction = dir;
+    m_motorInstructions.speed = static_cast<int>(speed);
 
     /*Serial.print("speed: ");
     Serial.println(speed);

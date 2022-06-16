@@ -9,33 +9,34 @@ Drive::Drive() : m_leftMotor(0), m_rightMotor(1)
 //Creates desired speed for each motor, and sets them
 void Drive::setDrive(double x, double y)
 {
-    if (x > 1 || x < -1 || y > 1 || y < -1)
+
+    if (rangeCheck(x) != x || rangeCheck(y) != y)
     {
         Serial.println("Invalid drive values: x: " + String(x) + " y: " + String(y));
         return;
     }
 
-    double leftSpeed = (-1 * y) + (-1 * x);
-    double rightSpeed = y + (-1 * x);
+//    double leftSpeed = (-1 * y) + (-1 * x);
+//    double rightSpeed = y + (-1 * x);
 
-    leftSpeed = rangeCheck(leftSpeed);
-    rightSpeed = rangeCheck(rightSpeed);
+//    leftSpeed = rangeCheck(leftSpeed);
+//    rightSpeed = rangeCheck(rightSpeed);
 
     Serial.println("Left");
-    m_leftMotor.setSpeed(leftSpeed);
+    m_leftMotor.setSpeed(y);
     Serial.println("Right");
-    m_rightMotor.setSpeed(rightSpeed);
+    m_rightMotor.setSpeed(x);
 }
 
 double Drive::rangeCheck(double val)
 {
-    if (val > 1)
+    if (val > 127)
     {
-        val = 1;
+        val = 127;
     }
-    else if (val < -1)
+    else if (val < 0)
     {
-        val = -1;
+        val = 0;
     }
 
     return val;
