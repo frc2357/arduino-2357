@@ -1,0 +1,28 @@
+name: Compile Sketch
+
+# The workflow will run on every push and pull request to the repository
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  compile-sketch:
+    runs-on: ubuntu-latest
+
+    steps:
+      # This step makes the contents of the repository available to the workflow
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # For more information: https://github.com/arduino/compile-sketches#readme
+      - name: Compile T-Shirt Cannon Projects
+        uses: arduino/compile-sketches@v1.0.1
+        with:
+          sketch-paths: |
+            - ./HumanControls
+            - ./RobotControl
+          libraries: |
+            - source-path: ./3rd-party-libraries
+            - source-path: ./libraries
